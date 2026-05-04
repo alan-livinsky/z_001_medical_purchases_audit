@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<tree>
+    <field name="name"/>
+    <field name="package"/>
+    <field name="origin_document_display"/>
+    <field name="revision_display"/>
+    <field name="state"/>
+    <field name="line_count"/>
+    <field name="signed_by_purchase_user"/>
+    <field name="auditor_review_user"/>
+</tree>

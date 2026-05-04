@@ -22,6 +22,18 @@
             <field name="name">medical_purchase_audit_form</field>
         </record>
 
+        <record model="ir.ui.view" id="view_medical_purchase_audit_review_tree">
+            <field name="model">gnuhealth.medical.purchase.audit</field>
+            <field name="type">tree</field>
+            <field name="name">medical_purchase_audit_review_tree</field>
+        </record>
+
+        <record model="ir.ui.view" id="view_medical_purchase_audit_review_form">
+            <field name="model">gnuhealth.medical.purchase.audit</field>
+            <field name="type">form</field>
+            <field name="name">medical_purchase_audit_review_form</field>
+        </record>
+
         <record model="ir.ui.view" id="view_medical_purchase_package_tree">
             <field name="model">gnuhealth.medication.purchase.package</field>
             <field name="type">tree</field>
@@ -44,6 +56,18 @@
             <field name="model">gnuhealth.medical.purchase.audit.line</field>
             <field name="type">form</field>
             <field name="name">medical_purchase_audit_line_form</field>
+        </record>
+
+        <record model="ir.ui.view" id="view_medical_purchase_audit_review_line_tree">
+            <field name="model">gnuhealth.medical.purchase.audit.line</field>
+            <field name="type">tree</field>
+            <field name="name">medical_purchase_audit_review_line_tree</field>
+        </record>
+
+        <record model="ir.ui.view" id="view_medical_purchase_audit_review_line_form">
+            <field name="model">gnuhealth.medical.purchase.audit.line</field>
+            <field name="type">form</field>
+            <field name="name">medical_purchase_audit_review_line_form</field>
         </record>
 
         <record model="ir.ui.view" id="view_create_purchase_draft_start">
@@ -100,13 +124,13 @@
 
         <record model="ir.action.act_window.view" id="act_medical_purchase_audit_review_tree_view">
             <field name="sequence" eval="10"/>
-            <field name="view" ref="view_medical_purchase_audit_tree"/>
+            <field name="view" ref="view_medical_purchase_audit_review_tree"/>
             <field name="act_window" ref="act_medical_purchase_audit_review"/>
         </record>
 
         <record model="ir.action.act_window.view" id="act_medical_purchase_audit_review_form_view">
             <field name="sequence" eval="20"/>
-            <field name="view" ref="view_medical_purchase_audit_form"/>
+            <field name="view" ref="view_medical_purchase_audit_review_form"/>
             <field name="act_window" ref="act_medical_purchase_audit_review"/>
         </record>
 

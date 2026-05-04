@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<form>
+    <group col="4" colspan="4" id="group_header">
+        <label name="name"/>
+        <field name="name"/>
+        <label name="state"/>
+        <field name="state"/>
+        <label name="package"/>
+        <field name="package"/>
+        <label name="origin_document_display"/>
+        <field name="origin_document_display"/>
+        <label name="revision_display"/>
+        <field name="revision_display"/>
+        <label name="line_count"/>
+        <field name="line_count"/>
+    </group>
+    <group col="4" colspan="4" id="group_signatures">
+        <label name="signed_by_purchase_user"/>
+        <field name="signed_by_purchase_user"/>
+        <label name="signed_by_purchase_date"/>
+        <field name="signed_by_purchase_date"/>
+        <label name="auditor_review_user"/>
+        <field name="auditor_review_user"/>
+        <label name="auditor_review_date"/>
+        <field name="auditor_review_date"/>
+    </group>
+    <label name="rejection_observation"/>
+    <field name="rejection_observation" colspan="4"/>
+    <field name="lines"
+           colspan="4"
+           mode="tree,form"
+           create="0"
+           view_ids="z_001_medical_purchases_audit.view_medical_purchase_audit_review_line_tree,z_001_medical_purchases_audit.view_medical_purchase_audit_review_line_form"/>
+</form>

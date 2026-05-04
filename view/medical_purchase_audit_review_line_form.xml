@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<form>
+    <group col="4" colspan="4" id="group_line_detail">
+        <label name="medicament"/>
+        <field name="medicament"/>
+        <label name="original_quantity"/>
+        <field name="original_quantity"/>
+        <label name="purchase_quantity"/>
+        <field name="purchase_quantity"/>
+        <label name="package_line_count"/>
+        <field name="package_line_count"/>
+    </group>
+</form>

@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<tree editable="1">
+    <field name="medicament"/>
+    <field name="original_quantity"/>
+    <field name="purchase_quantity"/>
+    <field name="package_line_count"/>
+</tree>

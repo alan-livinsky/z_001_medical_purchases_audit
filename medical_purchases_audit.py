@@ -142,8 +142,7 @@ class MedicalPurchaseAudit(ModelSQL, ModelView):
             result[record.id] = total
         return result
 
-    @fields.depends(
-        'lines', 'lines.purchase_quantity', 'lines.unit_price')
+    @fields.depends('lines')
     def on_change_with_total_amount(self, name=None):
         total = ZERO
         for line in self.lines or []:

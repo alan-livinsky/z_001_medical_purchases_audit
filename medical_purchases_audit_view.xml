@@ -100,7 +100,7 @@
         </record>
 
         <record model="ir.action.act_window" id="act_medical_purchase_audit_review">
-            <field name="name">Revision Auditor Medico</field>
+            <field name="name">Auditoria de compras</field>
             <field name="res_model">gnuhealth.medical.purchase.audit</field>
             <field name="domain" eval="[('state', '=', 'signed_by_purchases')]" pyson="1"/>
         </record>
@@ -145,14 +145,8 @@
                   sequence="10"
                   action="act_medical_purchase_audit"/>
 
-        <menuitem name="Paquetes de Auditoria"
-                  parent="menu_medical_purchase_audit_root"
-                  id="menu_medical_purchase_package"
-                  sequence="15"
-                  action="act_medical_purchase_package"/>
-
-        <menuitem name="Revision Auditor Medico"
-                  parent="menu_medical_purchase_audit_root"
+        <menuitem name="Auditoria de compras"
+                  parent="z_001_prescription_audit.menu_prescription_audit_v3"
                   id="menu_medical_purchase_audit_review"
                   sequence="20"
                   action="act_medical_purchase_audit_review"/>
@@ -174,16 +168,6 @@
 
         <record model="ir.ui.menu-res.group" id="menu_medical_purchase_audit_group_auditor">
             <field name="menu" ref="menu_medical_purchase_audit"/>
-            <field name="group" ref="group_medical_auditor_review"/>
-        </record>
-
-        <record model="ir.ui.menu-res.group" id="menu_medical_purchase_package_group_purchase">
-            <field name="menu" ref="menu_medical_purchase_package"/>
-            <field name="group" ref="group_medical_purchases_auditor"/>
-        </record>
-
-        <record model="ir.ui.menu-res.group" id="menu_medical_purchase_package_group_auditor">
-            <field name="menu" ref="menu_medical_purchase_package"/>
             <field name="group" ref="group_medical_auditor_review"/>
         </record>
 

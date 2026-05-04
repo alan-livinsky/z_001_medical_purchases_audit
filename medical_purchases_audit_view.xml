@@ -66,7 +66,7 @@
         <record model="ir.action.act_window" id="act_medical_purchase_audit_review">
             <field name="name">Revision Auditor Medico</field>
             <field name="res_model">gnuhealth.medical.purchase.audit</field>
-            <field name="domain">[('state', '=', 'signed_by_purchases')]</field>
+            <field name="domain" eval="[('state', '=', 'signed_by_purchases')]" pyson="1"/>
         </record>
 
         <record model="ir.action.act_window.view" id="act_medical_purchase_audit_review_tree_view">

@@ -3,11 +3,11 @@
     <data>
 
         <record model="res.group" id="z_auditor_comprar_medicamentos">
-            <field name="name">z_auditor_comprar_medicamentos</field>
+            <field name="name">z_001_medical_purchases_audit.auditor_comprar_medicamentos</field>
         </record>
 
         <record model="res.group" id="z_auditor_medico_compras">
-            <field name="name">z_auditorMedico_compras</field>
+            <field name="name">z_001_medical_purchases_audit.auditor_medico_compras</field>
         </record>
 
         <record model="ir.ui.view" id="view_medical_purchase_audit_tree">

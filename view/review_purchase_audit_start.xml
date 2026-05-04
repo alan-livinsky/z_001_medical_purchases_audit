@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<form>
+    <label name="decision"/>
+    <field name="decision" colspan="3"/>
+    <label name="observation"/>
+    <field name="observation" colspan="3"/>
+</form>

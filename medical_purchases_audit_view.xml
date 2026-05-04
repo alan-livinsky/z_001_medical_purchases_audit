@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tryton>
+    <data>
+
+        <record model="res.group" id="group_medical_purchases_auditor">
+            <field name="name">z_auditor_compras_medicas</field>
+        </record>
+
+        <record model="res.group" id="group_medical_auditor_review">
+            <field name="name">z_auditorMedico_compras</field>
+        </record>
+
+        <record model="ir.ui.view" id="view_medical_purchase_audit_tree">
+            <field name="model">gnuhealth.medical.purchase.audit</field>
+            <field name="type">tree</field>
+            <field name="name">medical_purchase_audit_tree</field>
+        </record>
+
+        <record model="ir.ui.view" id="view_medical_purchase_audit_form">
+            <field name="model">gnuhealth.medical.purchase.audit</field>
+            <field name="type">form</field>
+            <field name="name">medical_purchase_audit_form</field>
+        </record>
+
+        <record model="ir.ui.view" id="view_medical_purchase_audit_line_tree">
+            <field name="model">gnuhealth.medical.purchase.audit.line</field>
+            <field name="type">tree</field>
+            <field name="name">medical_purchase_audit_line_tree</field>
+        </record>
+
+        <record model="ir.ui.view" id="view_medical_purchase_audit_line_form">
+            <field name="model">gnuhealth.medical.purchase.audit.line</field>
+            <field name="type">form</field>
+            <field name="name">medical_purchase_audit_line_form</field>
+        </record>
+
+        <record model="ir.ui.view" id="view_create_purchase_draft_start">
+            <field name="model">gnuhealth.medical.purchase.audit.create.start</field>
+            <field name="type">form</field>
+            <field name="name">create_purchase_draft_start</field>
+        </record>
+
+        <record model="ir.ui.view" id="view_review_purchase_audit_start">
+            <field name="model">gnuhealth.medical.purchase.audit.review.start</field>
+            <field name="type">form</field>
+            <field name="name">review_purchase_audit_start</field>
+        </record>
+
+        <record model="ir.action.act_window" id="act_medical_purchase_audit">
+            <field name="name">Borradores de Compras</field>
+            <field name="res_model">gnuhealth.medical.purchase.audit</field>
+        </record>
+
+        <record model="ir.action.act_window.view" id="act_medical_purchase_audit_tree_view">
+            <field name="sequence" eval="10"/>
+            <field name="view" ref="view_medical_purchase_audit_tree"/>
+            <field name="act_window" ref="act_medical_purchase_audit"/>
+        </record>
+
+        <record model="ir.action.act_window.view" id="act_medical_purchase_audit_form_view">
+            <field name="sequence" eval="20"/>
+            <field name="view" ref="view_medical_purchase_audit_form"/>
+            <field name="act_window" ref="act_medical_purchase_audit"/>
+        </record>
+
+        <record model="ir.action.act_window" id="act_medical_purchase_audit_review">
+            <field name="name">Revision Auditor Medico</field>
+            <field name="res_model">gnuhealth.medical.purchase.audit</field>
+            <field name="domain">[('state', '=', 'signed_by_purchases')]</field>
+        </record>
+
+        <record model="ir.action.act_window.view" id="act_medical_purchase_audit_review_tree_view">
+            <field name="sequence" eval="10"/>
+            <field name="view" ref="view_medical_purchase_audit_tree"/>
+            <field name="act_window" ref="act_medical_purchase_audit_review"/>
+        </record>
+
+        <record model="ir.action.act_window.view" id="act_medical_purchase_audit_review_form_view">
+            <field name="sequence" eval="20"/>
+            <field name="view" ref="view_medical_purchase_audit_form"/>
+            <field name="act_window" ref="act_medical_purchase_audit_review"/>
+        </record>
+
+        <menuitem name="Compras Medicas"
+                  parent="health.gnuhealth_menu"
+                  id="menu_medical_purchase_audit_root"
+                  sequence="60"/>
+
+        <menuitem name="Borradores de Compras"
+                  parent="menu_medical_purchase_audit_root"
+                  id="menu_medical_purchase_audit"
+                  sequence="10"
+                  action="act_medical_purchase_audit"/>
+
+        <menuitem name="Revision Auditor Medico"
+                  parent="menu_medical_purchase_audit_root"
+                  id="menu_medical_purchase_audit_review"
+                  sequence="20"
+                  action="act_medical_purchase_audit_review"/>
+
+        <record model="ir.ui.menu-res.group" id="menu_medical_purchase_audit_root_group_purchase">
+            <field name="menu" ref="menu_medical_purchase_audit_root"/>
+            <field name="group" ref="group_medical_purchases_auditor"/>
+        </record>
+
+        <record model="ir.ui.menu-res.group" id="menu_medical_purchase_audit_root_group_auditor">
+            <field name="menu" ref="menu_medical_purchase_audit_root"/>
+            <field name="group" ref="group_medical_auditor_review"/>
+        </record>
+
+        <record model="ir.ui.menu-res.group" id="menu_medical_purchase_audit_group_purchase">
+            <field name="menu" ref="menu_medical_purchase_audit"/>
+            <field name="group" ref="group_medical_purchases_auditor"/>
+        </record>
+
+        <record model="ir.ui.menu-res.group" id="menu_medical_purchase_audit_group_auditor">
+            <field name="menu" ref="menu_medical_purchase_audit"/>
+            <field name="group" ref="group_medical_auditor_review"/>
+        </record>
+
+        <record model="ir.ui.menu-res.group" id="menu_medical_purchase_audit_review_group">
+            <field name="menu" ref="menu_medical_purchase_audit_review"/>
+            <field name="group" ref="group_medical_auditor_review"/>
+        </record>
+
+        <record model="ir.model.access" id="access_medical_purchase_audit_purchase">
+            <field name="model" search="[('model', '=', 'gnuhealth.medical.purchase.audit')]"/>
+            <field name="group" ref="group_medical_purchases_auditor"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_delete" eval="True"/>
+        </record>
+
+        <record model="ir.model.access" id="access_medical_purchase_audit_auditor">
+            <field name="model" search="[('model', '=', 'gnuhealth.medical.purchase.audit')]"/>
+            <field name="group" ref="group_medical_auditor_review"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_delete" eval="False"/>
+        </record>
+
+        <record model="ir.model.access" id="access_medical_purchase_audit_line_purchase">
+            <field name="model" search="[('model', '=', 'gnuhealth.medical.purchase.audit.line')]"/>
+            <field name="group" ref="group_medical_purchases_auditor"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_delete" eval="False"/>
+        </record>
+
+        <record model="ir.model.access" id="access_medical_purchase_audit_line_auditor">
+            <field name="model" search="[('model', '=', 'gnuhealth.medical.purchase.audit.line')]"/>
+            <field name="group" ref="group_medical_auditor_review"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_delete" eval="False"/>
+        </record>
+
+        <record model="ir.model.access" id="access_purchase_draft_start_purchase">
+            <field name="model" search="[('model', '=', 'gnuhealth.medical.purchase.audit.create.start')]"/>
+            <field name="group" ref="group_medical_purchases_auditor"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_delete" eval="False"/>
+        </record>
+
+        <record model="ir.model.access" id="access_review_purchase_audit_start_auditor">
+            <field name="model" search="[('model', '=', 'gnuhealth.medical.purchase.audit.review.start')]"/>
+            <field name="group" ref="group_medical_auditor_review"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_delete" eval="False"/>
+        </record>
+
+        <record model="ir.action.wizard" id="act_create_purchase_draft_wizard">
+            <field name="name">Crear Borrador de Compras</field>
+            <field name="wiz_name">gnuhealth.medical.purchase.audit.create</field>
+        </record>
+
+        <record model="ir.action.keyword" id="keyword_create_purchase_draft">
+            <field name="keyword">form_action</field>
+            <field name="action" ref="act_create_purchase_draft_wizard"/>
+            <field name="model">gnuhealth.medication.purchase.package,-1</field>
+        </record>
+
+        <record model="ir.action.wizard" id="act_review_purchase_audit_wizard">
+            <field name="name">Revisar Borrador</field>
+            <field name="wiz_name">gnuhealth.medical.purchase.audit.review</field>
+        </record>
+
+        <record model="ir.action.keyword" id="keyword_review_purchase_audit">
+            <field name="keyword">form_action</field>
+            <field name="action" ref="act_review_purchase_audit_wizard"/>
+            <field name="model">gnuhealth.medical.purchase.audit,-1</field>
+        </record>
+
+        <record model="ir.model.button" id="button_sign_by_purchases">
+            <field name="name">sign_by_purchases</field>
+            <field name="model" search="[('model', '=', 'gnuhealth.medical.purchase.audit')]"/>
+        </record>
+
+        <record model="ir.model.button.rule" id="rule_sign_by_purchases">
+            <field name="button" ref="button_sign_by_purchases"/>
+            <field name="group" ref="group_medical_purchases_auditor"/>
+        </record>
+
+    </data>
+</tryton>

@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<form>
+    <label name="package"/>
+    <field name="package" colspan="3"/>
+    <label name="generated_name"/>
+    <field name="generated_name" colspan="3"/>
+</form>

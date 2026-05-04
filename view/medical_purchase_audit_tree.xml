@@ -7,7 +7,5 @@
     <field name="line_count"/>
     <field name="total_amount"/>
     <field name="signed_by_purchase_user"/>
-    <field name="signed_by_purchase_date"/>
     <field name="auditor_review_user"/>
-    <field name="auditor_review_date"/>
 </tree>

@@ -7,10 +7,10 @@
         <field name="state"/>
         <label name="package"/>
         <field name="package"/>
-        <label name="origin_document"/>
-        <field name="origin_document"/>
-        <label name="revision_number"/>
-        <field name="revision_number"/>
+        <label name="origin_document_display"/>
+        <field name="origin_document_display"/>
+        <label name="revision_display"/>
+        <field name="revision_display"/>
         <label name="line_count"/>
         <field name="line_count"/>
         <label name="total_amount"/>

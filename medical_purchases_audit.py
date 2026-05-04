@@ -80,7 +80,13 @@ class MedicalPurchaseAudit(ModelSQL, ModelView):
     origin_document = fields.Many2One(
         'gnuhealth.medical.purchase.audit', 'Documento Origen',
         readonly=True)
+    origin_document_display = fields.Function(
+        fields.Char('Documento Origen'),
+        'get_origin_document_display')
     revision_number = fields.Integer('Revision', readonly=True)
+    revision_display = fields.Function(
+        fields.Char('Revision'),
+        'get_revision_display')
     state = fields.Selection([
         ('draft', 'Borrador'),
         ('signed_by_purchases', 'Firmado por Compras'),
@@ -143,6 +149,26 @@ class MedicalPurchaseAudit(ModelSQL, ModelView):
     @classmethod
     def get_can_edit(cls, records, name):
         return {record.id: record.state == 'draft' for record in records}
+
+    @classmethod
+    def get_origin_document_display(cls, records, name):
+        return {
+            record.id: (
+                record.origin_document.rec_name
+                if record.origin_document else 'Original'
+            )
+            for record in records
+        }
+
+    @classmethod
+    def get_revision_display(cls, records, name):
+        return {
+            record.id: (
+                'Revision %s' % record.revision_number
+                if record.revision_number else 'Sin revisiones'
+            )
+            for record in records
+        }
 
     @classmethod
     def create(cls, vlist):

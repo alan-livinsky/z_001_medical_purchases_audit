@@ -142,6 +142,14 @@ class MedicalPurchaseAudit(ModelSQL, ModelView):
             result[record.id] = total
         return result
 
+    @fields.depends(
+        'lines', 'lines.purchase_quantity', 'lines.unit_price')
+    def on_change_with_total_amount(self, name=None):
+        total = ZERO
+        for line in self.lines or []:
+            total += line._calculate_subtotal()
+        return total
+
     @classmethod
     def get_line_count(cls, records, name):
         return {record.id: len(record.lines) for record in records}
@@ -425,6 +433,7 @@ class MedicalPurchaseAuditLine(ModelSQL, ModelView):
     def get_line_subtotal(cls, records, name):
         return {record.id: record._calculate_subtotal() for record in records}
 
+    @fields.depends('purchase_quantity', 'unit_price')
     def on_change_with_line_subtotal(self, name=None):
         return self._calculate_subtotal()
 

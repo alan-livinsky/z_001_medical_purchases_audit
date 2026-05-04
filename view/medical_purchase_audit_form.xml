@@ -3,6 +3,7 @@
     <field name="lines"
            colspan="4"
            mode="tree,form"
+           create="0"
            view_ids="z_001_medical_purchases_audit.view_medical_purchase_audit_line_tree"/>
     <group col="4" colspan="4" id="group_header">
         <label name="name"/>

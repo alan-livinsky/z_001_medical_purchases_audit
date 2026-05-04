@@ -1,10 +1,5 @@
 <?xml version="1.0"?>
 <form>
-    <field name="lines"
-           colspan="4"
-           mode="tree,form"
-           create="0"
-           view_ids="z_001_medical_purchases_audit.view_medical_purchase_audit_line_tree"/>
     <group col="4" colspan="4" id="group_header">
         <label name="name"/>
         <field name="name"/>
@@ -38,4 +33,9 @@
     </group>
     <label name="rejection_observation"/>
     <field name="rejection_observation" colspan="4"/>
+    <field name="lines"
+           colspan="4"
+           mode="tree,form"
+           create="0"
+           view_ids="z_001_medical_purchases_audit.view_medical_purchase_audit_line_tree"/>
 </form>

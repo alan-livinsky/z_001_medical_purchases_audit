@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<tree>
+    <field name="name" string="Paquete"/>
+    <field name="date" string="Fecha"/>
+    <field name="created_by" string="Creado por"/>
+    <field name="purchase_draft_count"/>
+    <field name="has_active_purchase_draft"/>
+    <field name="notes" string="Observaciones"/>
+</tree>

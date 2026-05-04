@@ -22,6 +22,18 @@
             <field name="name">medical_purchase_audit_form</field>
         </record>
 
+        <record model="ir.ui.view" id="view_medical_purchase_package_tree">
+            <field name="model">gnuhealth.medication.purchase.package</field>
+            <field name="type">tree</field>
+            <field name="name">medication_purchase_package_purchase_tree</field>
+        </record>
+
+        <record model="ir.ui.view" id="view_medical_purchase_package_form">
+            <field name="model">gnuhealth.medication.purchase.package</field>
+            <field name="type">form</field>
+            <field name="name">medication_purchase_package_purchase_form</field>
+        </record>
+
         <record model="ir.ui.view" id="view_medical_purchase_audit_line_tree">
             <field name="model">gnuhealth.medical.purchase.audit.line</field>
             <field name="type">tree</field>
@@ -69,6 +81,23 @@
             <field name="domain" eval="[('state', '=', 'signed_by_purchases')]" pyson="1"/>
         </record>
 
+        <record model="ir.action.act_window" id="act_medical_purchase_package">
+            <field name="name">Paquetes de Auditoria</field>
+            <field name="res_model">gnuhealth.medication.purchase.package</field>
+        </record>
+
+        <record model="ir.action.act_window.view" id="act_medical_purchase_package_tree_view">
+            <field name="sequence" eval="10"/>
+            <field name="view" ref="view_medical_purchase_package_tree"/>
+            <field name="act_window" ref="act_medical_purchase_package"/>
+        </record>
+
+        <record model="ir.action.act_window.view" id="act_medical_purchase_package_form_view">
+            <field name="sequence" eval="20"/>
+            <field name="view" ref="view_medical_purchase_package_form"/>
+            <field name="act_window" ref="act_medical_purchase_package"/>
+        </record>
+
         <record model="ir.action.act_window.view" id="act_medical_purchase_audit_review_tree_view">
             <field name="sequence" eval="10"/>
             <field name="view" ref="view_medical_purchase_audit_tree"/>
@@ -91,6 +120,12 @@
                   id="menu_medical_purchase_audit"
                   sequence="10"
                   action="act_medical_purchase_audit"/>
+
+        <menuitem name="Paquetes de Auditoria"
+                  parent="menu_medical_purchase_audit_root"
+                  id="menu_medical_purchase_package"
+                  sequence="15"
+                  action="act_medical_purchase_package"/>
 
         <menuitem name="Revision Auditor Medico"
                   parent="menu_medical_purchase_audit_root"
@@ -118,6 +153,16 @@
             <field name="group" ref="group_medical_auditor_review"/>
         </record>
 
+        <record model="ir.ui.menu-res.group" id="menu_medical_purchase_package_group_purchase">
+            <field name="menu" ref="menu_medical_purchase_package"/>
+            <field name="group" ref="group_medical_purchases_auditor"/>
+        </record>
+
+        <record model="ir.ui.menu-res.group" id="menu_medical_purchase_package_group_auditor">
+            <field name="menu" ref="menu_medical_purchase_package"/>
+            <field name="group" ref="group_medical_auditor_review"/>
+        </record>
+
         <record model="ir.ui.menu-res.group" id="menu_medical_purchase_audit_review_group">
             <field name="menu" ref="menu_medical_purchase_audit_review"/>
             <field name="group" ref="group_medical_auditor_review"/>
@@ -137,6 +182,24 @@
             <field name="group" ref="group_medical_auditor_review"/>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_delete" eval="False"/>
+        </record>
+
+        <record model="ir.model.access" id="access_purchase_package_medical_purchase">
+            <field name="model" search="[('model', '=', 'gnuhealth.medication.purchase.package')]"/>
+            <field name="group" ref="group_medical_purchases_auditor"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_delete" eval="False"/>
+        </record>
+
+        <record model="ir.model.access" id="access_purchase_package_medical_auditor">
+            <field name="model" search="[('model', '=', 'gnuhealth.medication.purchase.package')]"/>
+            <field name="group" ref="group_medical_auditor_review"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
             <field name="perm_create" eval="False"/>
             <field name="perm_delete" eval="False"/>
         </record>

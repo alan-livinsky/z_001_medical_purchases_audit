@@ -46,6 +46,26 @@ class MedicationPurchasePackage(ModelSQL, ModelView):
     purchase_drafts = fields.One2Many(
         'gnuhealth.medical.purchase.audit', 'package',
         'Borradores de Compra', readonly=True)
+    purchase_draft_count = fields.Function(
+        fields.Integer('Cantidad de Borradores'),
+        'get_purchase_draft_metrics')
+    has_active_purchase_draft = fields.Function(
+        fields.Boolean('Tiene Borrador Activo'),
+        'get_purchase_draft_metrics')
+
+    @classmethod
+    def get_purchase_draft_metrics(cls, records, name):
+        result = {}
+        for record in records:
+            if name == 'purchase_draft_count':
+                result[record.id] = len(record.purchase_drafts)
+            elif name == 'has_active_purchase_draft':
+                result[record.id] = any(
+                    draft.state in ('draft', 'signed_by_purchases')
+                    for draft in record.purchase_drafts)
+            else:
+                result[record.id] = None
+        return result
 
 
 class MedicalPurchaseAudit(ModelSQL, ModelView):

@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<form>
+    <group col="4" colspan="4" id="group_package_header">
+        <label name="name"/>
+        <field name="name" readonly="1"/>
+        <label name="date"/>
+        <field name="date" readonly="1"/>
+        <label name="created_by"/>
+        <field name="created_by" readonly="1" colspan="3"/>
+        <label name="purchase_draft_count"/>
+        <field name="purchase_draft_count" readonly="1"/>
+        <label name="has_active_purchase_draft"/>
+        <field name="has_active_purchase_draft" readonly="1"/>
+    </group>
+    <label name="notes"/>
+    <field name="notes" readonly="1" colspan="4"/>
+    <separator string="Borradores de Compras" colspan="4" id="separator_purchase_drafts"/>
+    <field name="purchase_drafts"
+           colspan="4"
+           mode="tree,form"
+           readonly="1"
+           view_ids="z_001_medical_purchases_audit.view_medical_purchase_audit_tree"/>
+    <separator string="Lineas Auditadas" colspan="4" id="separator_audit_lines"/>
+    <field name="audit_lines"
+           colspan="4"
+           mode="tree"
+           readonly="1"
+           view_ids="z_001_prescription_audit.view_medication_audit_package_list"/>
+</form>

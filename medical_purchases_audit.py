@@ -133,6 +133,42 @@ class MedicalPurchaseAudit(ModelSQL, ModelView):
         return 0
 
     @classmethod
+    def _current_user_has_group(cls, group_xml_id):
+        pool = Pool()
+        User = pool.get('res.user')
+        ModelData = pool.get('ir.model.data')
+        try:
+            group_id = ModelData.get_id(
+                'z_001_medical_purchases_audit', group_xml_id)
+        except KeyError:
+            return False
+        current_user = User(Transaction().user)
+        return any(group.id == group_id for group in current_user.groups)
+
+    @classmethod
+    def _current_user_is_purchase_manager(cls):
+        return cls._current_user_has_group('z_gestor_compras_medicamentos')
+
+    @classmethod
+    def _current_user_is_medical_auditor(cls):
+        return cls._current_user_has_group(
+            'z_auditor_medico_compras_medicamentos')
+
+    @classmethod
+    def _ensure_purchase_manager(cls):
+        if not cls._current_user_is_purchase_manager():
+            raise UserError(
+                'No tiene los permisos necesarios para gestionar '
+                'borradores de compras.')
+
+    @classmethod
+    def _ensure_medical_auditor(cls):
+        if not cls._current_user_is_medical_auditor():
+            raise UserError(
+                'No tiene los permisos necesarios para auditar compras '
+                'de medicamentos.')
+
+    @classmethod
     def get_total_amount(cls, records, name):
         result = {}
         for record in records:
@@ -179,6 +215,15 @@ class MedicalPurchaseAudit(ModelSQL, ModelView):
 
     @classmethod
     def create(cls, vlist):
+        context = Transaction().context
+        if not (
+                context.get('from_purchase_draft_wizard')
+                or context.get('from_purchase_package_automation')
+                or context.get('from_purchase_revision_clone')):
+            raise UserError(
+                'Los borradores de compras solo se pueden crear desde el '
+                'flujo autorizado.')
+
         vlist = [dict(v) for v in vlist]
         for vals in vlist:
             vals.setdefault('revision_number', 0)
@@ -203,12 +248,40 @@ class MedicalPurchaseAudit(ModelSQL, ModelView):
             'auditor_review_user', 'auditor_review_date',
             'rejection_observation', 'name', 'origin_document',
         }
+        sign_fields = {
+            'state', 'signed_by_purchase_user', 'signed_by_purchase_date',
+        }
+        review_fields = {
+            'state', 'auditor_review_user', 'auditor_review_date',
+            'rejection_observation',
+        }
+        context = Transaction().context
         for records, values in zip(actions, actions):
             changed = set(values.keys())
             for record in records:
                 if record.state != 'draft' and changed - allowed_locked_fields:
                     raise UserError(
                         'El borrador de compras ya no se puede editar.')
+                if changed & sign_fields:
+                    if changed - sign_fields:
+                        raise UserError(
+                            'La firma de Compras solo puede modificar los '
+                            'campos previstos por el flujo.')
+                    if not context.get('from_sign_by_purchases'):
+                        raise UserError(
+                            'El estado firmado por Compras solo se puede '
+                            'asignar desde la accion de firma.')
+                    cls._ensure_purchase_manager()
+                if changed & review_fields:
+                    if changed - review_fields:
+                        raise UserError(
+                            'La revision del auditor solo puede modificar '
+                            'los campos previstos por el flujo.')
+                    if not context.get('from_purchase_audit_review'):
+                        raise UserError(
+                            'La decision del auditor solo se puede aplicar '
+                            'desde la auditoria de compras de medicamentos.')
+                    cls._ensure_medical_auditor()
         super().write(*args)
 
     @classmethod
@@ -283,22 +356,24 @@ class MedicalPurchaseAudit(ModelSQL, ModelView):
             raise UserError(
                 'El paquete no contiene medicamentos para generar un borrador.')
 
-        document, = cls.create([{
-            'package': package.id,
-            'base_name': cls._build_base_name(package),
-            'revision_number': 0,
-            'lines': [('create', list(consolidated.values()))],
-        }])
+        with Transaction().set_context(from_purchase_package_automation=True):
+            document, = cls.create([{
+                'package': package.id,
+                'base_name': cls._build_base_name(package),
+                'revision_number': 0,
+                'lines': [('create', list(consolidated.values()))],
+            }])
         return document
 
     def clone_revision(self):
         Line = Pool().get('gnuhealth.medical.purchase.audit.line')
-        new_document, = self.__class__.create([{
-            'package': self.package.id,
-            'base_name': self.base_name,
-            'origin_document': self.id,
-            'revision_number': self.revision_number + 1,
-        }])
+        with Transaction().set_context(from_purchase_revision_clone=True):
+            new_document, = self.__class__.create([{
+                'package': self.package.id,
+                'base_name': self.base_name,
+                'origin_document': self.id,
+                'revision_number': self.revision_number + 1,
+            }])
         Line.create([{
             'document': new_document.id,
             'medicament': line.medicament.id,
@@ -312,6 +387,7 @@ class MedicalPurchaseAudit(ModelSQL, ModelView):
     @classmethod
     @ModelView.button
     def sign_by_purchases(cls, records):
+        cls._ensure_purchase_manager()
         current_user = Pool().get('res.user')(Transaction().user)
         for record in records:
             if record.state != 'draft':
@@ -329,42 +405,47 @@ class MedicalPurchaseAudit(ModelSQL, ModelView):
                         line.purchase_quantity > line.original_quantity):
                     raise UserError(
                         'Hay cantidades fuera del rango permitido.')
-        cls.write(records, {
-            'state': 'signed_by_purchases',
-            'signed_by_purchase_user': current_user.id,
-            'signed_by_purchase_date': datetime.utcnow(),
-        })
+        with Transaction().set_context(from_sign_by_purchases=True):
+            cls.write(records, {
+                'state': 'signed_by_purchases',
+                'signed_by_purchase_user': current_user.id,
+                'signed_by_purchase_date': datetime.utcnow(),
+            })
 
     @classmethod
     def accept_documents(cls, records):
+        cls._ensure_medical_auditor()
         current_user = Pool().get('res.user')(Transaction().user)
         for record in records:
             if record.state != 'signed_by_purchases':
                 raise UserError(
                     'Solo se pueden aceptar documentos firmados por Compras.')
-        cls.write(records, {
-            'state': 'accepted',
-            'auditor_review_user': current_user.id,
-            'auditor_review_date': datetime.utcnow(),
-        })
+        with Transaction().set_context(from_purchase_audit_review=True):
+            cls.write(records, {
+                'state': 'accepted',
+                'auditor_review_user': current_user.id,
+                'auditor_review_date': datetime.utcnow(),
+            })
 
     @classmethod
     def reject_documents(cls, records, observation):
         if not observation:
             raise UserError(
                 'Debe ingresar una observacion para rechazar el borrador.')
+        cls._ensure_medical_auditor()
         current_user = Pool().get('res.user')(Transaction().user)
         created = []
         for record in records:
             if record.state != 'signed_by_purchases':
                 raise UserError(
                     'Solo se pueden rechazar documentos firmados por Compras.')
-            cls.write([record], {
-                'state': 'rejected',
-                'auditor_review_user': current_user.id,
-                'auditor_review_date': datetime.utcnow(),
-                'rejection_observation': observation,
-            })
+            with Transaction().set_context(from_purchase_audit_review=True):
+                cls.write([record], {
+                    'state': 'rejected',
+                    'auditor_review_user': current_user.id,
+                    'auditor_review_date': datetime.utcnow(),
+                    'rejection_observation': observation,
+                })
             created.append(record.clone_revision())
         return created
 
@@ -533,11 +614,13 @@ class CreatePurchaseDraftWizard(Wizard):
 
     def transition_create_draft(self):
         Package = Pool().get('gnuhealth.medication.purchase.package')
+        MedicalPurchaseAudit._ensure_purchase_manager()
         active_id = Transaction().context.get('active_id')
         if not active_id:
             raise UserError('No se encontro un paquete para procesar.')
         package = Package(active_id)
-        MedicalPurchaseAudit.create_from_package(package)
+        with Transaction().set_context(from_purchase_draft_wizard=True):
+            MedicalPurchaseAudit.create_from_package(package)
         return 'end'
 
     def end(self):
@@ -574,6 +657,7 @@ class ReviewPurchaseAuditWizard(Wizard):
 
     def transition_apply_review(self):
         MedicalPurchaseAudit = Pool().get('gnuhealth.medical.purchase.audit')
+        MedicalPurchaseAudit._ensure_medical_auditor()
         active_ids = Transaction().context.get('active_ids') or []
         if not active_ids:
             raise UserError('No se selecciono ningun borrador para revisar.')

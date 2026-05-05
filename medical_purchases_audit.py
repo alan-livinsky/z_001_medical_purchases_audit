@@ -258,11 +258,23 @@ class MedicalPurchaseAudit(ModelSQL, ModelView):
         context = Transaction().context
         for records, values in zip(actions, actions):
             changed = set(values.keys())
+            target_state = values.get('state')
+            is_sign_operation = (
+                target_state == 'signed_by_purchases'
+                or bool(changed & {
+                    'signed_by_purchase_user', 'signed_by_purchase_date',
+                }))
+            is_review_operation = (
+                target_state in {'accepted', 'rejected'}
+                or bool(changed & {
+                    'auditor_review_user', 'auditor_review_date',
+                    'rejection_observation',
+                }))
             for record in records:
                 if record.state != 'draft' and changed - allowed_locked_fields:
                     raise UserError(
                         'El borrador de compras ya no se puede editar.')
-                if changed & sign_fields:
+                if is_sign_operation:
                     if changed - sign_fields:
                         raise UserError(
                             'La firma de Compras solo puede modificar los '
@@ -272,7 +284,7 @@ class MedicalPurchaseAudit(ModelSQL, ModelView):
                             'El estado firmado por Compras solo se puede '
                             'asignar desde la accion de firma.')
                     cls._ensure_purchase_manager()
-                if changed & review_fields:
+                elif is_review_operation:
                     if changed - review_fields:
                         raise UserError(
                             'La revision del auditor solo puede modificar '
@@ -282,6 +294,10 @@ class MedicalPurchaseAudit(ModelSQL, ModelView):
                             'La decision del auditor solo se puede aplicar '
                             'desde la auditoria de compras de medicamentos.')
                     cls._ensure_medical_auditor()
+                elif 'state' in changed:
+                    raise UserError(
+                        'El estado del borrador solo se puede cambiar desde '
+                        'las acciones autorizadas.')
         super().write(*args)
 
     @classmethod

@@ -2,12 +2,12 @@
 <tryton>
     <data>
 
-        <record model="res.group" id="z_auditor_comprar_medicamentos">
-            <field name="name">z_001_medical_purchases_audit.auditor_comprar_medicamentos</field>
+        <record model="res.group" id="z_gestor_compras_medicamentos">
+            <field name="name">z_gestor_compras_medicamentos</field>
         </record>
 
-        <record model="res.group" id="z_auditor_medico_compras">
-            <field name="name">z_001_medical_purchases_audit.auditor_medico_compras</field>
+        <record model="res.group" id="z_auditor_medico_compras_medicamentos">
+            <field name="name">z_auditor_medico_compras_medicamentos</field>
         </record>
 
         <record model="ir.ui.view" id="view_medical_purchase_audit_tree">
@@ -153,32 +153,32 @@
 
         <record model="ir.ui.menu-res.group" id="menu_medical_purchase_audit_root_group_purchase">
             <field name="menu" ref="menu_medical_purchase_audit_root"/>
-            <field name="group" ref="z_auditor_comprar_medicamentos"/>
+            <field name="group" ref="z_gestor_compras_medicamentos"/>
         </record>
 
         <record model="ir.ui.menu-res.group" id="menu_medical_purchase_audit_root_group_auditor">
             <field name="menu" ref="menu_medical_purchase_audit_root"/>
-            <field name="group" ref="z_auditor_medico_compras"/>
+            <field name="group" ref="z_auditor_medico_compras_medicamentos"/>
         </record>
 
         <record model="ir.ui.menu-res.group" id="menu_medical_purchase_audit_group_purchase">
             <field name="menu" ref="menu_medical_purchase_audit"/>
-            <field name="group" ref="z_auditor_comprar_medicamentos"/>
+            <field name="group" ref="z_gestor_compras_medicamentos"/>
         </record>
 
         <record model="ir.ui.menu-res.group" id="menu_medical_purchase_audit_group_auditor">
             <field name="menu" ref="menu_medical_purchase_audit"/>
-            <field name="group" ref="z_auditor_medico_compras"/>
+            <field name="group" ref="z_auditor_medico_compras_medicamentos"/>
         </record>
 
         <record model="ir.ui.menu-res.group" id="menu_medical_purchase_audit_review_group">
             <field name="menu" ref="menu_medical_purchase_audit_review"/>
-            <field name="group" ref="z_auditor_medico_compras"/>
+            <field name="group" ref="z_auditor_medico_compras_medicamentos"/>
         </record>
 
         <record model="ir.model.access" id="access_medical_purchase_audit_purchase">
             <field name="model" search="[('model', '=', 'gnuhealth.medical.purchase.audit')]"/>
-            <field name="group" ref="z_auditor_comprar_medicamentos"/>
+            <field name="group" ref="z_gestor_compras_medicamentos"/>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="True"/>
             <field name="perm_create" eval="True"/>
@@ -187,7 +187,7 @@
 
         <record model="ir.model.access" id="access_medical_purchase_audit_auditor">
             <field name="model" search="[('model', '=', 'gnuhealth.medical.purchase.audit')]"/>
-            <field name="group" ref="z_auditor_medico_compras"/>
+            <field name="group" ref="z_auditor_medico_compras_medicamentos"/>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="True"/>
             <field name="perm_create" eval="False"/>
@@ -196,7 +196,7 @@
 
         <record model="ir.model.access" id="access_purchase_package_medical_purchase">
             <field name="model" search="[('model', '=', 'gnuhealth.medication.purchase.package')]"/>
-            <field name="group" ref="z_auditor_comprar_medicamentos"/>
+            <field name="group" ref="z_gestor_compras_medicamentos"/>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="False"/>
             <field name="perm_create" eval="False"/>
@@ -205,7 +205,7 @@
 
         <record model="ir.model.access" id="access_purchase_package_medical_auditor">
             <field name="model" search="[('model', '=', 'gnuhealth.medication.purchase.package')]"/>
-            <field name="group" ref="z_auditor_medico_compras"/>
+            <field name="group" ref="z_auditor_medico_compras_medicamentos"/>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="False"/>
             <field name="perm_create" eval="False"/>
@@ -214,7 +214,7 @@
 
         <record model="ir.model.access" id="access_medical_purchase_audit_line_purchase">
             <field name="model" search="[('model', '=', 'gnuhealth.medical.purchase.audit.line')]"/>
-            <field name="group" ref="z_auditor_comprar_medicamentos"/>
+            <field name="group" ref="z_gestor_compras_medicamentos"/>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="True"/>
             <field name="perm_create" eval="True"/>
@@ -223,7 +223,7 @@
 
         <record model="ir.model.access" id="access_medical_purchase_audit_line_auditor">
             <field name="model" search="[('model', '=', 'gnuhealth.medical.purchase.audit.line')]"/>
-            <field name="group" ref="z_auditor_medico_compras"/>
+            <field name="group" ref="z_auditor_medico_compras_medicamentos"/>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="False"/>
             <field name="perm_create" eval="False"/>
@@ -232,7 +232,7 @@
 
         <record model="ir.model.access" id="access_purchase_draft_start_purchase">
             <field name="model" search="[('model', '=', 'gnuhealth.medical.purchase.audit.create.start')]"/>
-            <field name="group" ref="z_auditor_comprar_medicamentos"/>
+            <field name="group" ref="z_gestor_compras_medicamentos"/>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="True"/>
             <field name="perm_create" eval="True"/>
@@ -241,7 +241,7 @@
 
         <record model="ir.model.access" id="access_review_purchase_audit_start_auditor">
             <field name="model" search="[('model', '=', 'gnuhealth.medical.purchase.audit.review.start')]"/>
-            <field name="group" ref="z_auditor_medico_compras"/>
+            <field name="group" ref="z_auditor_medico_compras_medicamentos"/>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="True"/>
             <field name="perm_create" eval="True"/>
@@ -277,7 +277,7 @@
 
         <record model="ir.model.button.rule" id="rule_sign_by_purchases">
             <field name="button" ref="button_sign_by_purchases"/>
-            <field name="group" ref="z_auditor_comprar_medicamentos"/>
+            <field name="group" ref="z_gestor_compras_medicamentos"/>
         </record>
 
     </data>

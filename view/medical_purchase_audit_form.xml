@@ -13,8 +13,7 @@
         <field name="revision_display"/>
         <label name="line_count"/>
         <field name="line_count"/>
-        <label name="total_amount"/>
-        <field name="total_amount"/>
+       
     </group>
    
     <label name="rejection_observation"/>
@@ -23,6 +22,10 @@
            colspan="4"
            mode="tree,form"
            view_ids="z_001_medical_purchases_audit.view_medical_purchase_audit_line_tree"/>
+ 
+  <label name="total_amount"/>
+    <field name="total_amount"/>
+ 
  <group col="4" colspan="4" id="group_signatures">
         <label name="signed_by_purchase_user"/>
         <field name="signed_by_purchase_user"/>

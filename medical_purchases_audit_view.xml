@@ -220,6 +220,15 @@
             <field name="perm_delete" eval="False"/>
         </record>
 
+        <record model="ir.model.access" id="access_patient_medical_auditor_readonly">
+            <field name="model" search="[('model', '=', 'gnuhealth.patient')]"/>
+            <field name="group" ref="z_auditor_medico_compras_medicamentos"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_delete" eval="False"/>
+        </record>
+
         <record model="ir.model.access" id="access_purchase_draft_start_purchase">
             <field name="model" search="[('model', '=', 'gnuhealth.medical.purchase.audit.create.start')]"/>
             <field name="group" ref="z_gestor_compras_medicamentos"/>

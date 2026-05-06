@@ -87,6 +87,9 @@ class MedicalPurchaseAudit(ModelSQL, ModelView):
     revision_display = fields.Function(
         fields.Char('Revision'),
         'get_revision_display')
+    audit_status_display = fields.Function(
+        fields.Char('Estado de Revision'),
+        'get_audit_status_display')
     state = fields.Selection([
         ('draft', 'Borrador'),
         ('signed_by_purchases', 'Firmado por Compras'),
@@ -210,6 +213,18 @@ class MedicalPurchaseAudit(ModelSQL, ModelView):
                 'Revision %s' % record.revision_number
                 if record.revision_number else 'Sin revisiones'
             )
+            for record in records
+        }
+
+    @classmethod
+    def get_audit_status_display(cls, records, name):
+        labels = {
+            'signed_by_purchases': 'Pendiente',
+            'accepted': 'Aceptado',
+            'rejected': 'Rechazado',
+        }
+        return {
+            record.id: labels.get(record.state, 'Borrador')
             for record in records
         }
 

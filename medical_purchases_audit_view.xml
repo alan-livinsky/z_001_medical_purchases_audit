@@ -102,7 +102,7 @@
         <record model="ir.action.act_window" id="act_medical_purchase_audit_review">
             <field name="name">Auditoria compras de medicamentos</field>
             <field name="res_model">gnuhealth.medical.purchase.audit</field>
-            <field name="domain" eval="[('state', '=', 'signed_by_purchases')]" pyson="1"/>
+            <field name="domain" eval="[('state', 'in', ['signed_by_purchases', 'accepted', 'rejected'])]" pyson="1"/>
         </record>
 
         <record model="ir.action.act_window" id="act_medical_purchase_package">

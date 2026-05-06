@@ -19,7 +19,7 @@
            colspan="4"
            mode="tree,form"
            readonly="1"
-           view_ids="z_001_medical_purchases_audit.view_medical_purchase_audit_tree"/>
+           view_ids="z_001_medical_purchases_audit.view_medical_purchase_audit_tree,z_001_medical_purchases_audit.view_medical_purchase_audit_form"/>
     <separator string="Lineas Auditadas" colspan="4" id="separator_audit_lines"/>
     <field name="audit_lines"
            colspan="4"

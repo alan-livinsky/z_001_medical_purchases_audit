@@ -3,8 +3,8 @@
     <group col="4" colspan="4" id="group_header">
         <label name="name"/>
         <field name="name"/>
-        <label name="state"/>
-        <field name="state"/>
+        <label name="audit_status_display"/>
+        <field name="audit_status_display"/>
         <label name="package"/>
         <field name="package"/>
         <label name="origin_document_display"/>
@@ -15,6 +15,8 @@
         <field name="line_count"/>
     </group>
     <group col="4" colspan="4" id="group_signatures">
+        <label name="state"/>
+        <field name="state"/>
         <label name="signed_by_purchase_user"/>
         <field name="signed_by_purchase_user"/>
         <label name="signed_by_purchase_date"/>

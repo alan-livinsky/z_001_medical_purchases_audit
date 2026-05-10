@@ -263,6 +263,11 @@
             <field name="wiz_name">gnuhealth.medical.purchase.audit.review</field>
         </record>
 
+        <record model="ir.action-res.group" id="act_review_purchase_audit_wizard_group_auditor">
+            <field name="action" ref="act_review_purchase_audit_wizard"/>
+            <field name="group" ref="z_auditor_medico_compras_medicamentos"/>
+        </record>
+
         <record model="ir.action.keyword" id="keyword_review_purchase_audit">
             <field name="keyword">form_action</field>
             <field name="action" ref="act_review_purchase_audit_wizard"/>

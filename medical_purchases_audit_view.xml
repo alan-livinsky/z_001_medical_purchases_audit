@@ -135,7 +135,7 @@
         </record>
 
         <menuitem name="Compras Medicas"
-                  parent="health.gnuhealth_menu"
+                  parent="purchase.menu_purchase"
                   id="menu_medical_purchase_audit_root"
                   sequence="60"/>
 
